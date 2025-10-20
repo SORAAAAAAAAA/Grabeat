@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import { prisma } from "../../config/database.js";
+import { invalidateToken, invalidateAllUserTokens } from "../../services/token.service.js";
 // Import the prisma instance from your config file
 
 const registerUser = async (fullName, email, password, phoneNumber, confirmPassword) => {
@@ -54,4 +55,14 @@ const loginUser = async ({ email, password }) => {
   return userWithoutPassword;
 };
 
-export { registerUser, loginUser };
+// Logout from current device (invalidate single token)
+const logoutUser = async (token) => {
+  return await invalidateToken(token);
+};
+
+// Logout from all devices (invalidate all user tokens)
+const logoutAllDevices = async (userId) => {
+  return await invalidateAllUserTokens(userId);
+};
+
+export { registerUser, loginUser, logoutUser, logoutAllDevices };

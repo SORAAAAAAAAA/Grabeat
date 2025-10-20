@@ -12,34 +12,35 @@ const LogSign: React.FC<LogSignProps> = ({ setIsLogged }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [fullName, setFullName] = useState('');
-    const [phoneNum, setPhoneNum] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState(''); 
     const [isChecked, setIsChecked] = useState(false); // State for checkbox
+    const API_URL = "http://localhost:3000"; 
 
     const handleRegister = async () => {
         try {
-            const response = await fetch('http://192.168.5.96/register', {
+            const response = await fetch(`${API_URL}/api/auth/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, password, fullName, phoneNum, confirmPassword }),
+                body: JSON.stringify({ fullName, phoneNumber, email, password, confirmPassword }),
             });
             const data = await response.json();
             if (response.status === 201) {
-                Alert.alert('Success', data.message);
+                alert(`Success: ${data.message}`);
             } else {
-                Alert.alert('Error', data.error);
+                alert(`Error: ${data.error}`);
             }
         } catch (error) {
             console.error(error);
-            Alert.alert('Error', 'Unable to register user');
+            alert(`Error: Unable to register user`);
         }
     };
 
     const handleLogin = async () => {
         try {
-            const response = await fetch('http://192.168.5.96:5000/login', {
+            const response = await fetch(`${API_URL}/api/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -48,14 +49,14 @@ const LogSign: React.FC<LogSignProps> = ({ setIsLogged }) => {
             });
             const data = await response.json();
             if (response.status === 200) {
-                Alert.alert('Success', data.message);
+                alert(`Success: ${data.message}`);
                 setIsLogged(true); // Set isLogged to true after successful login
             } else {
-                Alert.alert('Error', data.error);
+                alert(`Error: ${data.error}`);
             }
         } catch (error) {
             console.error(error);
-            Alert.alert('Error', 'Unable to login user');
+            alert(`Error: Unable to login user`);
         }
     };
 
@@ -84,8 +85,8 @@ const LogSign: React.FC<LogSignProps> = ({ setIsLogged }) => {
                         style={styLS.input}
                         placeholder="Phone Number"
                         placeholderTextColor="#aaa"
-                        value={phoneNum}
-                        onChangeText={setPhoneNum}
+                        value={phoneNumber}
+                        onChangeText={setPhoneNumber}
                         keyboardType="numeric"
                     />
                 </>
